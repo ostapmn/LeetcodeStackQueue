@@ -7,23 +7,22 @@ class FreqStack:
 
     def __init__(self):
         self.stack = deque()
-        self.trash = deque()
-        self.values = defaultdict(int)
+
 
     def push(self, val: int) -> None:
         self.stack.append(val)
-        self.values[val]+=1
 
     def pop(self) -> int:
         max_freq = (0, None)
+        used = set()
         for _ in range(len(self.stack)):
-            x = self.stack.popleft()
-            self.stack.append(x)
-            if self.stack.count(x) >= max_freq[0]:
-                max_freq = (self.stack.count(x), x)
-        # for el in self.stack:
-        #     if self.stack.count(el) >= max_freq[0]:
-        #         max_freq = (self.stack.count(el), el)
+            x = self.stack.pop()
+            self.stack.appendleft(x)
+            if x not in used:
+                used.add(x)
+                if self.stack.count(x) > max_freq[0]:
+                    max_freq = (self.stack.count(x), x)
+
         res = max_freq[1]
         for _ in range(len(self.stack)):
             x = self.stack.pop()
@@ -36,12 +35,19 @@ class FreqStack:
 
 
 freqStack = FreqStack()
+freqStack.push(1)
+freqStack.push(0)
+freqStack.push(0)
+freqStack.push(1)
 freqStack.push(5)
-freqStack.push(7)
-freqStack.push(5)
-freqStack.push(7)
 freqStack.push(4)
+freqStack.push(1)
 freqStack.push(5)
+freqStack.push(1)
+freqStack.push(6)
+print(freqStack.stack)
+print(freqStack.pop())
+print(freqStack.stack)
 print(freqStack.pop())
 print(freqStack.stack)
 print(freqStack.pop())
